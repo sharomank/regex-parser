@@ -1,6 +1,6 @@
 # Folders #
 .*
-target
+*/target/*
 
 # Custom Files #
 *.class
