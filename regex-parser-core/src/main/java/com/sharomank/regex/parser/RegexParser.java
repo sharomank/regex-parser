@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Parser regular expressions
+ * Regular expressions parser
  *
  * @author Roman Kurbangaliyev
  * @since 21.05.2012
@@ -29,7 +29,13 @@ public class RegexParser {
             RegexTypes.NonPrintable
     );
 
-    public List<RegexPart> parse(String regexPattern) {
+    /**
+     * Parse regular expression
+     *
+     * @param regexPattern regular expression
+     * @return list of {@link RegexPart}
+     */
+    public static List<RegexPart> parse(String regexPattern) {
         long startTime = System.nanoTime();
         if (regexPattern == null || regexPattern.trim().length() == 0) {
             return Collections.emptyList();
@@ -37,7 +43,6 @@ public class RegexParser {
             try {
                 Pattern.compile(regexPattern);
             } catch (PatternSyntaxException e) {
-                e.printStackTrace();
                 return Arrays.asList(new RegexPart(regexPattern, RegexTypes.ParseError));
             }
         }
@@ -53,7 +58,7 @@ public class RegexParser {
         return helper.getResult();
     }
 
-    private void parseFirstLevel(ParserHelper helper) {
+    private static void parseFirstLevel(ParserHelper helper) {
         if (RegexTypes.Group.equals(helper.getCurrentType())) {
             helper.putCurrentRegexPart();
             parseNextToken(helper);
@@ -63,17 +68,17 @@ public class RegexParser {
         }
     }
 
-    private void parseSecondLevel(ParserHelper helper) {
+    private static void parseSecondLevel(ParserHelper helper) {
         if (SECOND_LEVEL.contains(helper.getCurrentType())) {
             helper.putCurrentRegexPart();
             parseNextToken(helper);
             parseThirdLevel(helper);
-        } else if (!helper.isEnd()) {
+        } else {
             parseThirdLevel(helper);
         }
     }
 
-    private void parseThirdLevel(ParserHelper helper) {
+    private static void parseThirdLevel(ParserHelper helper) {
         if (THIRD_LEVEL.contains(helper.getCurrentType())) {
             helper.putCurrentRegexPart();
             parseNextToken(helper);
@@ -87,7 +92,7 @@ public class RegexParser {
         }
     }
 
-    private void parseNextToken(ParserHelper helper) {
+    private static void parseNextToken(ParserHelper helper) {
         if (helper.isEnd()) {
             return;
         }

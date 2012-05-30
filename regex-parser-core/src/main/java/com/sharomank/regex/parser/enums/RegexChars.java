@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Common chars of regular expression
+ * General chars of regular expression
  *
  * @author Roman Kurbangaliyev
  * @since 21.05.2012
@@ -25,8 +25,8 @@ public enum RegexChars {
     ZeroOrOne('?', RegexTypes.Quantifier),
     ZeroOrMore('*', RegexTypes.Quantifier),
     OneOrMore('+', RegexTypes.Quantifier),
-    BracesStart('{', RegexTypes.Quantifier),
-    BracesEnd('}', RegexTypes.Quantifier),
+    BracesStart('{', RegexTypes.QuantifierGroup),
+    BracesEnd('}', RegexTypes.QuantifierGroup),
     Point('.', RegexTypes.CharacterClass),
     SquareBracketStart('[', RegexTypes.CharacterGroup),
     SquareBracketEnd(']', RegexTypes.CharacterGroup),

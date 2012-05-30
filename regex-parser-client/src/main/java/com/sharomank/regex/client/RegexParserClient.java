@@ -43,8 +43,8 @@ public class RegexParserClient {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(new JScrollPane(pane));
         frame.setSize(COLOR_PANE_WIDTH, COLOR_PANE_HEIGHT);
-        int xPoint = screenSize.width/2 - COLOR_PANE_WIDTH /2;
-        int yPoint = screenSize.height/2 - COLOR_PANE_HEIGHT/2;
+        int xPoint = screenSize.width / 2 - COLOR_PANE_WIDTH / 2;
+        int yPoint = screenSize.height / 2 - COLOR_PANE_HEIGHT / 2;
         frame.setLocation(xPoint, yPoint);
         frame.setVisible(true);
     }

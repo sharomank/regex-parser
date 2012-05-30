@@ -45,8 +45,8 @@ public class ParserHelper {
 
     public void putCurrentRegexPart() {
         RegexPart part = new RegexPart(getToken(), getCurrentType());
-        System.out.println(part.toString());
         result.add(part);
+        setCurrentType(null);
         updatePreviousIndex();
     }
 
