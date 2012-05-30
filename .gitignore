@@ -1,4 +1,8 @@
+# Folders #
 .*
+target
+
+# Custom Files #
 *.class
 *.iml
 
