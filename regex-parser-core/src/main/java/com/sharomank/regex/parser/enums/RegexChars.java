@@ -53,11 +53,6 @@ public enum RegexChars {
             RegexChars.GroupEnd.getValue()
     );
 
-    public static final List<Character> QUANTIFIER_GROUP = Arrays.asList(
-            RegexChars.BracesStart.getValue(),
-            RegexChars.BracesEnd.getValue()
-    );
-
     public static final List<Character> QUANTIFIERS = Arrays.asList(
             RegexChars.ZeroOrOne.getValue(),
             RegexChars.ZeroOrMore.getValue(),
@@ -68,6 +63,11 @@ public enum RegexChars {
             PreviousMatch.getValue(),
             WordBoundary.getValue(),
             NonWordBoundary.getValue()
+    );
+
+    public static final List<Character> ANCHOR_END = Arrays.asList(
+            End.getValue(),
+            EndLine.getValue()
     );
 
     public static final List<Character> CHARACTER_CLASSES_AFTER_BACKSLASH = Arrays.asList(

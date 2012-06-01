@@ -27,7 +27,7 @@ public class RegexParserClient {
 //        regex = "^(\\d{4}[- ]){3}\\d{4}|\\d{16}$";                                    //credit card
 //        regex = "^(([0-9])|([0-1][0-9])|([2][0-3])):(([0-9])|([0-5][0-9]))$";      //time
         System.out.println("Regex: " + regex);
-        java.util.List<RegexPart> result = new RegexParser().parse(regex);
+        java.util.List<RegexPart> result = RegexParser.parse(regex);
         System.out.println("regex  count = " + regex.length());
         System.out.println("result count = " + result.size());
 

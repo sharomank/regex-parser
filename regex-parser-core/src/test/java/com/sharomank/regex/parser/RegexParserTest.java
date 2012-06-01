@@ -16,20 +16,90 @@ public class RegexParserTest {
     @Test
     public void simpleGroup() throws Exception {
         String regex = "[test]";
-        List<RegexPart> expected = Arrays.asList(new RegexPart(regex, RegexTypes.CharacterGroup));
-        List<RegexPart> actual = RegexParser.parse(regex);
-        matchRegexParts(expected, actual);
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("[test]", RegexTypes.CharacterGroup)
+        );
+        checkParse(regex, expected);
     }
 
     @Test
     public void simpleQuantifierGroup() throws Exception {
+        String regex = "a{2}";
         List<RegexPart> expected = Arrays.asList(
-                new RegexPart("z", RegexTypes.None),
-                new RegexPart("{", RegexTypes.QuantifierGroup),
-                new RegexPart("2", RegexTypes.None),
-                new RegexPart("}", RegexTypes.QuantifierGroup)
+                new RegexPart("a", RegexTypes.None),
+                new RegexPart("{2}", RegexTypes.QuantifierGroup)
         );
-        List<RegexPart> actual = RegexParser.parse("z{2}");
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleAlternation() throws Exception {
+        String regex = "a|b";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("a", RegexTypes.None),
+                new RegexPart("|", RegexTypes.Alternation),
+                new RegexPart("b", RegexTypes.None)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleBackslash() throws Exception {
+        String regex = "\\\\\\\\";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("\\\\", RegexTypes.None),
+                new RegexPart("\\\\", RegexTypes.None)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleAnchorWithoutBackslash() throws Exception {
+        String regex = "^t$";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("^", RegexTypes.Anchor),
+                new RegexPart("t", RegexTypes.None),
+                new RegexPart("$", RegexTypes.Anchor)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleAnchorStartAndEnd() throws Exception {
+        String regex = "\\At\\Z";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("\\A", RegexTypes.Anchor),
+                new RegexPart("t", RegexTypes.None),
+                new RegexPart("\\Z", RegexTypes.Anchor)
+        );
+        checkParse(regex, expected);
+    }
+
+
+    @Test
+    public void simpleAnchorStartAndEndLine() throws Exception {
+        String regex = "\\At\\z";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("\\A", RegexTypes.Anchor),
+                new RegexPart("t", RegexTypes.None),
+                new RegexPart("\\z", RegexTypes.Anchor)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleAnchorOther() throws Exception {
+        String regex = "\\G\\b\\B";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("\\G", RegexTypes.Anchor),
+                new RegexPart("\\b", RegexTypes.Anchor),
+                new RegexPart("\\B", RegexTypes.Anchor)
+        );
+        checkParse(regex, expected);
+    }
+
+    private void checkParse(String regex, List<RegexPart> expected) {
+        List<RegexPart> actual = RegexParser.parse(regex);
         matchRegexParts(expected, actual);
     }
 

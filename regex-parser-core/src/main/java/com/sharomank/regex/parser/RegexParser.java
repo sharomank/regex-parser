@@ -101,9 +101,9 @@ public class RegexParser {
         char previousChar = helper.getPreviousChar();
         helper.incrementCurrentIndex();
 
-        if (helper.getCurrentIndex() == 1 && RegexChars.Caret.getValue().equals(currentChar)) {
+        if (helper.isStart() && RegexChars.Caret.getValue().equals(currentChar)) {
             helper.setCurrentType(RegexTypes.Anchor);
-        } else if (RegexChars.Backslash.getValue().equals(previousChar)) {
+        } else if (RegexChars.Backslash.getValue().equals(previousChar) && !"\\\\".equals(helper.getPreviousToken())) {
             if (helper.getCurrentIndex() == 2 && RegexChars.Start.getValue().equals(currentChar)) {
                 helper.setCurrentType(RegexTypes.Anchor);
             } else if (RegexChars.ANCHOR_AFTER_BACKSLASH.contains(currentChar)) {
@@ -112,7 +112,7 @@ public class RegexParser {
                 helper.setCurrentType(RegexTypes.CharacterClass);
             } else if (RegexChars.NON_PRINTABLES.contains(currentChar)) {
                 helper.setCurrentType(RegexTypes.NonPrintable);
-            } else if (helper.isEnd() && (RegexChars.End.getValue().equals(currentChar) || RegexChars.EndLine.getValue().equals(currentChar))) {
+            } else if (helper.isEnd() && RegexChars.ANCHOR_END.contains(currentChar)) {
                 helper.setCurrentType(RegexTypes.Anchor);
             } else {
                 helper.setCurrentType(RegexTypes.None);
@@ -132,7 +132,13 @@ public class RegexParser {
                 helper.setCurrentType(RegexTypes.CharacterGroup);
             } else if (RegexChars.Point.getValue().equals(currentChar)) {
                 helper.setCurrentType(RegexTypes.CharacterClass);
-            } else if (RegexChars.QUANTIFIER_GROUP.contains(currentChar)) {
+            } else if (RegexChars.BracesStart.getValue().equals(currentChar)) {
+                while (!RegexChars.BracesEnd.getValue().equals(helper.getCurrentChar())) {
+                    if (!helper.isEnd()) {
+                        helper.incrementCurrentIndex();
+                    }
+                }
+                helper.incrementCurrentIndex();
                 helper.setCurrentType(RegexTypes.QuantifierGroup);
             } else if (RegexChars.QUANTIFIERS.contains(currentChar)) {
                 helper.setCurrentType(RegexTypes.Quantifier);

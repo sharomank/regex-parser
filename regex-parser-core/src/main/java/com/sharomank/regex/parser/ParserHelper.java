@@ -51,6 +51,15 @@ public class ParserHelper {
     }
 
     /**
+     * Is start of expression
+     *
+     * @return <code>true</code> - expression is start, <code>false</code> - expression isn't start.
+     */
+    public boolean isStart() {
+        return getCurrentIndex() == 1;
+    }
+
+    /**
      * Is end of expression
      *
      * @return <code>true</code> - expression is end, <code>false</code> - expression isn't end.
@@ -81,5 +90,12 @@ public class ParserHelper {
             previousChar = expression.charAt(currentIndex - 1);
         }
         return previousChar;
+    }
+
+    public String getPreviousToken() {
+        if (result.size() > 0) {
+            return result.get(result.size() - 1).getPart();
+        }
+        return "";
     }
 }
