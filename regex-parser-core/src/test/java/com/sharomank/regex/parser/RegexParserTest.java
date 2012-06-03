@@ -15,9 +15,52 @@ public class RegexParserTest {
 
     @Test
     public void simpleGroup() throws Exception {
+        String regex = "(test)";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("(", RegexTypes.Group),
+                new RegexPart("t", RegexTypes.None),
+                new RegexPart("e", RegexTypes.None),
+                new RegexPart("s", RegexTypes.None),
+                new RegexPart("t", RegexTypes.None),
+                new RegexPart(")", RegexTypes.Group)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleCharacterGroup() throws Exception {
         String regex = "[test]";
         List<RegexPart> expected = Arrays.asList(
                 new RegexPart("[test]", RegexTypes.CharacterGroup)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleCharacterClass() throws Exception {
+        String regex = "\\d\\D\\s\\S\\w\\W.";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("\\d", RegexTypes.CharacterClass),
+                new RegexPart("\\D", RegexTypes.CharacterClass),
+                new RegexPart("\\s", RegexTypes.CharacterClass),
+                new RegexPart("\\S", RegexTypes.CharacterClass),
+                new RegexPart("\\w", RegexTypes.CharacterClass),
+                new RegexPart("\\W", RegexTypes.CharacterClass),
+                new RegexPart(".", RegexTypes.CharacterClass)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleQuantifier() throws Exception {
+        String regex = "a+b?d*";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("a", RegexTypes.None),
+                new RegexPart("+", RegexTypes.Quantifier),
+                new RegexPart("b", RegexTypes.None),
+                new RegexPart("?", RegexTypes.Quantifier),
+                new RegexPart("d", RegexTypes.None),
+                new RegexPart("*", RegexTypes.Quantifier)
         );
         checkParse(regex, expected);
     }
@@ -75,7 +118,6 @@ public class RegexParserTest {
         checkParse(regex, expected);
     }
 
-
     @Test
     public void simpleAnchorStartAndEndLine() throws Exception {
         String regex = "\\At\\z";
@@ -94,6 +136,30 @@ public class RegexParserTest {
                 new RegexPart("\\G", RegexTypes.Anchor),
                 new RegexPart("\\b", RegexTypes.Anchor),
                 new RegexPart("\\B", RegexTypes.Anchor)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleNonPrintable() throws Exception {
+        String regex = "\\a\\t\\e\\f\\v\\r\\n";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("\\a", RegexTypes.NonPrintable),
+                new RegexPart("\\t", RegexTypes.NonPrintable),
+                new RegexPart("\\e", RegexTypes.NonPrintable),
+                new RegexPart("\\f", RegexTypes.NonPrintable),
+                new RegexPart("\\v", RegexTypes.NonPrintable),
+                new RegexPart("\\r", RegexTypes.NonPrintable),
+                new RegexPart("\\n", RegexTypes.NonPrintable)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleParseError() throws Exception {
+        String regex = "parse|error\\";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("parse|error\\", RegexTypes.ParseError)
         );
         checkParse(regex, expected);
     }

@@ -17,15 +17,17 @@ import java.util.regex.PatternSyntaxException;
  */
 public class RegexParser {
     private static final List<RegexTypes> SECOND_LEVEL = Arrays.asList(
-            RegexTypes.CharacterClass,
+            RegexTypes.Alternation,
+            //RegexTypes.Anchor,
             RegexTypes.Quantifier,
-            RegexTypes.QuantifierGroup,
-            RegexTypes.Alternation
+            RegexTypes.QuantifierGroup
     );
 
     private static final List<RegexTypes> THIRD_LEVEL = Arrays.asList(
-            RegexTypes.None,
             RegexTypes.Anchor,
+            RegexTypes.CharacterClass,
+            RegexTypes.CharacterGroup,
+            RegexTypes.None,
             RegexTypes.NonPrintable
     );
 
@@ -36,7 +38,6 @@ public class RegexParser {
      * @return list of {@link RegexPart}
      */
     public static List<RegexPart> parse(String regexPattern) {
-        long startTime = System.nanoTime();
         if (regexPattern == null || regexPattern.trim().length() == 0) {
             return Collections.emptyList();
         } else {
@@ -52,9 +53,6 @@ public class RegexParser {
         if (helper.getToken() != null) {
             parseFirstLevel(helper);
         }
-        long endTime = System.nanoTime();
-        long estimatedTime = endTime - startTime;
-        System.out.println("Parse time in ms = " + estimatedTime * Math.pow(10, -6));
         return helper.getResult();
     }
 
@@ -83,10 +81,6 @@ public class RegexParser {
             helper.putCurrentRegexPart();
             parseNextToken(helper);
             parseFirstLevel(helper);
-        } else if (RegexTypes.CharacterGroup.equals(helper.getCurrentType())) {
-            helper.putCurrentRegexPart();
-            parseNextToken(helper);
-            parseFirstLevel(helper);//parseThirdLevel(helper); TODO: checking...
         } else if (!helper.isEnd()) {
             parseFirstLevel(helper);
         }

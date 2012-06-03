@@ -34,6 +34,7 @@ public class RegexParserClient {
         ColorPane pane = new ColorPane();
         pane.setFont(CUSTOM_FONT);
         for (RegexPart rt : result) {
+            System.out.println(rt);
             pane.append(getColor(rt.getType()), rt.getPart());
         }
         pane.setEditable(false);
