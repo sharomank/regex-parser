@@ -7,6 +7,12 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 
+/**
+ * ColorPane is JTextPane with simple method append color text
+ *
+ * @author Roman Kurbangaliyev
+ * @since 21.05.2012
+ */
 public class ColorPane extends JTextPane {
     public void append(Color color, String str) {
         StyleContext styleContext = StyleContext.getDefaultStyleContext();
