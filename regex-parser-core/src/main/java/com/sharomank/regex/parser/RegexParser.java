@@ -1,7 +1,7 @@
 package com.sharomank.regex.parser;
 
-import com.sharomank.regex.parser.enums.RegexChars;
-import com.sharomank.regex.parser.enums.RegexTypes;
+import com.sharomank.regex.parser.enums.RegexChar;
+import com.sharomank.regex.parser.enums.RegexType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,19 +16,19 @@ import java.util.regex.PatternSyntaxException;
  * @since 21.05.2012
  */
 public class RegexParser {
-    private static final List<RegexTypes> SECOND_LEVEL = Arrays.asList(
-            RegexTypes.Alternation,
-            //RegexTypes.Anchor,
-            RegexTypes.Quantifier,
-            RegexTypes.QuantifierGroup
+    private static final List<RegexType> SECOND_LEVEL = Arrays.asList(
+            RegexType.Alternation,
+            //RegexType.Anchor,
+            RegexType.Quantifier,
+            RegexType.QuantifierGroup
     );
 
-    private static final List<RegexTypes> THIRD_LEVEL = Arrays.asList(
-            RegexTypes.Anchor,
-            RegexTypes.CharacterClass,
-            RegexTypes.CharacterGroup,
-            RegexTypes.None,
-            RegexTypes.NonPrintable
+    private static final List<RegexType> THIRD_LEVEL = Arrays.asList(
+            RegexType.Anchor,
+            RegexType.CharacterClass,
+            RegexType.CharacterGroup,
+            RegexType.None,
+            RegexType.NonPrintable
     );
 
     /**
@@ -44,7 +44,7 @@ public class RegexParser {
             try {
                 Pattern.compile(regexPattern);
             } catch (PatternSyntaxException e) {
-                return Arrays.asList(new RegexPart(regexPattern, RegexTypes.ParseError));
+                return Arrays.asList(new RegexPart(regexPattern, RegexType.ParseError));
             }
         }
 
@@ -57,7 +57,7 @@ public class RegexParser {
     }
 
     private static void parseFirstLevel(ParserHelper helper) {
-        if (RegexTypes.Group.equals(helper.getCurrentType())) {
+        if (RegexType.Group.equals(helper.getCurrentType())) {
             helper.putCurrentRegexPart();
             parseNextToken(helper);
             parseSecondLevel(helper);
@@ -95,53 +95,53 @@ public class RegexParser {
         char previousChar = helper.getPreviousChar();
         helper.incrementCurrentIndex();
 
-        if (helper.isStart() && RegexChars.Caret.getValue().equals(currentChar)) {
-            helper.setCurrentType(RegexTypes.Anchor);
-        } else if (RegexChars.Backslash.getValue().equals(previousChar) && !"\\\\".equals(helper.getPreviousToken())) {
-            if (helper.getCurrentIndex() == 2 && RegexChars.Start.getValue().equals(currentChar)) {
-                helper.setCurrentType(RegexTypes.Anchor);
-            } else if (RegexChars.ANCHOR_AFTER_BACKSLASH.contains(currentChar)) {
-                helper.setCurrentType(RegexTypes.Anchor);
-            } else if (RegexChars.CHARACTER_CLASSES_AFTER_BACKSLASH.contains(currentChar)) {
-                helper.setCurrentType(RegexTypes.CharacterClass);
-            } else if (RegexChars.NON_PRINTABLES.contains(currentChar)) {
-                helper.setCurrentType(RegexTypes.NonPrintable);
-            } else if (helper.isEnd() && RegexChars.ANCHOR_END.contains(currentChar)) {
-                helper.setCurrentType(RegexTypes.Anchor);
+        if (helper.isStart() && RegexChar.Caret.getValue().equals(currentChar)) {
+            helper.setCurrentType(RegexType.Anchor);
+        } else if (RegexChar.Backslash.getValue().equals(previousChar) && !"\\\\".equals(helper.getPreviousToken())) {
+            if (helper.getCurrentIndex() == 2 && RegexChar.Start.getValue().equals(currentChar)) {
+                helper.setCurrentType(RegexType.Anchor);
+            } else if (RegexChar.ANCHOR_AFTER_BACKSLASH.contains(currentChar)) {
+                helper.setCurrentType(RegexType.Anchor);
+            } else if (RegexChar.CHARACTER_CLASSES_AFTER_BACKSLASH.contains(currentChar)) {
+                helper.setCurrentType(RegexType.CharacterClass);
+            } else if (RegexChar.NON_PRINTABLES.contains(currentChar)) {
+                helper.setCurrentType(RegexType.NonPrintable);
+            } else if (helper.isEnd() && RegexChar.ANCHOR_END.contains(currentChar)) {
+                helper.setCurrentType(RegexType.Anchor);
             } else {
-                helper.setCurrentType(RegexTypes.None);
+                helper.setCurrentType(RegexType.None);
             }
         } else {
-            if (helper.isEnd() && RegexChars.Dollar.getValue().equals(currentChar)) {
-                helper.setCurrentType(RegexTypes.Anchor);
-            } else if (RegexChars.GROUPS.contains(currentChar)) {
-                helper.setCurrentType(RegexTypes.Group);
-            } else if (RegexChars.SquareBracketStart.getValue().equals(currentChar)) {
-                while (!RegexChars.SquareBracketEnd.getValue().equals(helper.getCurrentChar())) {
+            if (helper.isEnd() && RegexChar.Dollar.getValue().equals(currentChar)) {
+                helper.setCurrentType(RegexType.Anchor);
+            } else if (RegexChar.GROUPS.contains(currentChar)) {
+                helper.setCurrentType(RegexType.Group);
+            } else if (RegexChar.SquareBracketStart.getValue().equals(currentChar)) {
+                while (!RegexChar.SquareBracketEnd.getValue().equals(helper.getCurrentChar())) {
                     if (!helper.isEnd()) {
                         helper.incrementCurrentIndex();
                     }
                 }
                 helper.incrementCurrentIndex();
-                helper.setCurrentType(RegexTypes.CharacterGroup);
-            } else if (RegexChars.Point.getValue().equals(currentChar)) {
-                helper.setCurrentType(RegexTypes.CharacterClass);
-            } else if (RegexChars.BracesStart.getValue().equals(currentChar)) {
-                while (!RegexChars.BracesEnd.getValue().equals(helper.getCurrentChar())) {
+                helper.setCurrentType(RegexType.CharacterGroup);
+            } else if (RegexChar.Point.getValue().equals(currentChar)) {
+                helper.setCurrentType(RegexType.CharacterClass);
+            } else if (RegexChar.BracesStart.getValue().equals(currentChar)) {
+                while (!RegexChar.BracesEnd.getValue().equals(helper.getCurrentChar())) {
                     if (!helper.isEnd()) {
                         helper.incrementCurrentIndex();
                     }
                 }
                 helper.incrementCurrentIndex();
-                helper.setCurrentType(RegexTypes.QuantifierGroup);
-            } else if (RegexChars.QUANTIFIERS.contains(currentChar)) {
-                helper.setCurrentType(RegexTypes.Quantifier);
-            } else if (!helper.isEnd() && RegexChars.Backslash.getValue().equals(currentChar)) {
+                helper.setCurrentType(RegexType.QuantifierGroup);
+            } else if (RegexChar.QUANTIFIERS.contains(currentChar)) {
+                helper.setCurrentType(RegexType.Quantifier);
+            } else if (!helper.isEnd() && RegexChar.Backslash.getValue().equals(currentChar)) {
                 parseNextToken(helper);
-            } else if (RegexChars.Or.getValue().equals(currentChar)) {
-                helper.setCurrentType(RegexTypes.Alternation);
+            } else if (RegexChar.Or.getValue().equals(currentChar)) {
+                helper.setCurrentType(RegexType.Alternation);
             } else {
-                helper.setCurrentType(RegexTypes.None);
+                helper.setCurrentType(RegexType.None);
             }
         }
     }

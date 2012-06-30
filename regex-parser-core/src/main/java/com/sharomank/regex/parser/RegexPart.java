@@ -1,6 +1,6 @@
 package com.sharomank.regex.parser;
 
-import com.sharomank.regex.parser.enums.RegexTypes;
+import com.sharomank.regex.parser.enums.RegexType;
 
 import java.text.MessageFormat;
 
@@ -12,9 +12,9 @@ import java.text.MessageFormat;
  */
 public class RegexPart {
     private final String part;
-    private final RegexTypes type;
+    private final RegexType type;
 
-    public RegexPart(String token, RegexTypes type) {
+    public RegexPart(String token, RegexType type) {
         if (token == null || type == null) {
             throw new IllegalArgumentException();
         }
@@ -27,7 +27,7 @@ public class RegexPart {
         return part;
     }
 
-    public RegexTypes getType() {
+    public RegexType getType() {
         return type;
     }
 

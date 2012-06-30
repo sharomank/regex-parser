@@ -1,6 +1,6 @@
 package com.sharomank.regex.parser;
 
-import com.sharomank.regex.parser.enums.RegexTypes;
+import com.sharomank.regex.parser.enums.RegexType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +13,10 @@ import java.util.List;
  */
 public class ParserHelper {
     private final String expression;
+    private final List<RegexPart> result;
     private int previousIndex;
     private int currentIndex;
-    private RegexTypes currentType;
-    private List<RegexPart> result;
+    private RegexType currentType;
 
     public ParserHelper(String expression) {
         this.expression = expression;
@@ -31,11 +31,11 @@ public class ParserHelper {
         return currentIndex;
     }
 
-    public RegexTypes getCurrentType() {
+    public RegexType getCurrentType() {
         return currentType;
     }
 
-    public void setCurrentType(RegexTypes currentType) {
+    public void setCurrentType(RegexType currentType) {
         this.currentType = currentType;
     }
 

@@ -3,15 +3,13 @@ package com.sharomank.regex.client;
 import com.sharomank.regex.client.ui.ColorPane;
 import com.sharomank.regex.parser.RegexParser;
 import com.sharomank.regex.parser.RegexPart;
-import com.sharomank.regex.parser.enums.RegexTypes;
+import com.sharomank.regex.parser.enums.RegexType;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;
 import java.awt.*;
 
 /**
@@ -24,7 +22,7 @@ public class RegexParserClient {
     private static final Color DARK_GREEN = new Color(0, 135, 20);
     private static final Color BROWN = new Color(200, 80, 0);
 
-    private static Font CUSTOM_FONT = new Font(Font.MONOSPACED, Font.BOLD, 20);
+    private static final Font CUSTOM_FONT = new Font(Font.MONOSPACED, Font.BOLD, 20);
     private static final int COLOR_PANE_WIDTH = 800;
     private static final int COLOR_PANE_HEIGHT = 400;
 
@@ -39,7 +37,7 @@ public class RegexParserClient {
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame frame = new JFrame("Regex Parser Client");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setContentPane(new JScrollPane(COLOR_PANE));
         frame.setSize(COLOR_PANE_WIDTH, COLOR_PANE_HEIGHT);
         int xPoint = screenSize.width / 2 - COLOR_PANE_WIDTH / 2;
@@ -62,7 +60,7 @@ public class RegexParserClient {
         return pane.getDocument();
     }
 
-    private static Color getColor(RegexTypes type) {
+    private static Color getColor(RegexType type) {
         switch (type) {
             case None:
                 return Color.BLACK;
@@ -89,7 +87,7 @@ public class RegexParserClient {
         }
     }
 
-    private static DocumentListener documentListener = new DocumentListener() {
+    private static final DocumentListener documentListener = new DocumentListener() {
         @Override
         public void insertUpdate(DocumentEvent e) {
             parse(e);

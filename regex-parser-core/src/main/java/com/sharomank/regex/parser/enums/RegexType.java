@@ -6,7 +6,7 @@ package com.sharomank.regex.parser.enums;
  * @author Roman Kurbangaliyev
  * @since 21.05.2012
  */
-public enum RegexTypes {
+public enum RegexType {
     None,
     Alternation,
     Anchor,
