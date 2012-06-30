@@ -13,12 +13,14 @@ import javax.swing.text.Document;
 import java.awt.*;
 
 /**
- * Client class for demonstration how use {@link RegexParser}
+ * Demo client class for demonstration how use {@link RegexParser}
  *
  * @author Roman Kurbangaliyev
  * @since 21.05.2012
  */
-public class RegexParserClient {
+public class DemoClient {
+    private static final String TITLE = "Regex Parser - Demo Client";
+
     private static final Color DARK_GREEN = new Color(0, 135, 20);
     private static final Color BROWN = new Color(200, 80, 0);
 
@@ -36,7 +38,7 @@ public class RegexParserClient {
         COLOR_PANE.setCaretPosition(startRegex.length());
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        JFrame frame = new JFrame("Regex Parser Client");
+        JFrame frame = new JFrame(TITLE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setContentPane(new JScrollPane(COLOR_PANE));
         frame.setSize(COLOR_PANE_WIDTH, COLOR_PANE_HEIGHT);

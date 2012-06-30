@@ -18,7 +18,6 @@ import java.util.regex.PatternSyntaxException;
 public class RegexParser {
     private static final List<RegexType> SECOND_LEVEL = Arrays.asList(
             RegexType.Alternation,
-            //RegexType.Anchor,
             RegexType.Quantifier,
             RegexType.QuantifierGroup
     );
