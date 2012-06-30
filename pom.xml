@@ -11,7 +11,7 @@
 
     <modules>
         <module>regex-parser-core</module>
-        <module>regex-parser-client</module>
+        <module>regex-parser-client-demo</module>
     </modules>
 
     <dependencyManagement>
