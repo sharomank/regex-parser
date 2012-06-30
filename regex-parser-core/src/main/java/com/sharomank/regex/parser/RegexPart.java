@@ -3,6 +3,8 @@ package com.sharomank.regex.parser;
 import com.sharomank.regex.parser.enums.RegexType;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Class for store result parsing
@@ -13,6 +15,11 @@ import java.text.MessageFormat;
 public class RegexPart {
     private final String part;
     private final RegexType type;
+
+    private static final List<RegexType> typesSupportContent = Arrays.asList(
+            RegexType.CharacterGroup,
+            RegexType.QuantifierGroup
+    );
 
     public RegexPart(String token, RegexType type) {
         if (token == null || type == null) {
@@ -29,6 +36,14 @@ public class RegexPart {
 
     public RegexType getType() {
         return type;
+    }
+
+    public String getContent() {
+        if (typesSupportContent.contains(getType())) {
+            return getPart().substring(1, part.length() - 1);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -59,6 +74,6 @@ public class RegexPart {
 
     @Override
     public String toString() {
-        return MessageFormat.format("Regex part=''{0}'', type={1}", part, type.name());
+        return MessageFormat.format("Regex part=''{0}'', type={1}, content={2}", part, type.name(), getContent());
     }
 }
