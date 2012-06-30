@@ -111,7 +111,7 @@ public class RegexParserClient {
                 String text = e.getDocument().getText(0, e.getDocument().getLength());
                 Document doc = parseRegex(text);
                 COLOR_PANE.setDocument(doc);
-                COLOR_PANE.setCaretPosition(Math.min(caretPosition, text.length()));
+                COLOR_PANE.setCaretPosition(Math.min(caretPosition, doc.getLength()));
                 COLOR_PANE.invalidate();
             } catch (BadLocationException ex) {
                 throw new IllegalStateException(ex.getMessage());
