@@ -28,6 +28,18 @@ public class RegexParserTest {
     }
 
     @Test
+    public void simpleGroupAfterQuantifierGroup() throws Exception {
+        String regex = "(\\d{4})";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("(", RegexType.Group),
+                new RegexPart("\\d", RegexType.CharacterClass),
+                new RegexPart("{4}", RegexType.QuantifierGroup),
+                new RegexPart(")", RegexType.Group)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
     public void simpleCharacterGroup() throws Exception {
         String regex = "[test]";
         List<RegexPart> expected = Arrays.asList(
