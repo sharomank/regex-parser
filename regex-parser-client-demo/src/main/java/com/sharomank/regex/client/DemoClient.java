@@ -11,6 +11,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import java.awt.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Demo client class for demonstration how use {@link RegexParser}
@@ -21,21 +24,38 @@ import java.awt.*;
 public class DemoClient {
     private static final String TITLE = "Regex Parser - Demo Client";
 
-    private static final Color DARK_GREEN = new Color(0, 135, 20);
-    private static final Color BROWN = new Color(200, 80, 0);
-
-    private static final Font CUSTOM_FONT = new Font(Font.MONOSPACED, Font.BOLD, 20);
     private static final int COLOR_PANE_WIDTH = 800;
     private static final int COLOR_PANE_HEIGHT = 400;
 
     private static final ColorPane COLOR_PANE = new ColorPane();
+    private static final Font CUSTOM_FONT = new Font(Font.MONOSPACED, Font.BOLD, 20);
+
+    private static final Map<RegexType, Color> REGEX_COLOR_MAP;
+
+    static {
+        Color DARK_GREEN = new Color(0, 135, 20);
+        Color BROWN = new Color(200, 80, 0);
+        Map<RegexType, Color> colorMap = new HashMap<RegexType, Color>();
+        colorMap.put(RegexType.None, Color.BLACK);
+        colorMap.put(RegexType.Group, Color.BLUE);
+        colorMap.put(RegexType.QuantifierGroup, Color.BLUE);
+        colorMap.put(RegexType.Quantifier, Color.MAGENTA);
+        colorMap.put(RegexType.Alternation, Color.MAGENTA);
+        colorMap.put(RegexType.CharacterGroup, BROWN);
+        colorMap.put(RegexType.CharacterClass, DARK_GREEN);
+        colorMap.put(RegexType.Anchor, DARK_GREEN);
+        colorMap.put(RegexType.ParseError, Color.RED);
+        colorMap.put(RegexType.NonPrintable, Color.GRAY);
+        REGEX_COLOR_MAP = Collections.unmodifiableMap(colorMap);
+    }
 
     public static void main(String arg[]) {
+        String defaultRegex = "^([a-zA-Z]+)|([0-9]{1,4})$";
+
         COLOR_PANE.setFont(CUSTOM_FONT);
         COLOR_PANE.getDocument().addDocumentListener(documentListener);
-        String startRegex = "^([a-zA-Z]+)|([0-9]{1,4})$";
-        COLOR_PANE.setText(startRegex);
-        COLOR_PANE.setCaretPosition(startRegex.length());
+        COLOR_PANE.setText(defaultRegex);
+        COLOR_PANE.setCaretPosition(defaultRegex.length());
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame frame = new JFrame(TITLE);
@@ -56,37 +76,10 @@ public class DemoClient {
         System.out.println("result count = " + result.size());
         for (RegexPart rt : result) {
             System.out.println(rt);
-            pane.append(getColor(rt.getType()), rt.getPart());
+            pane.append(REGEX_COLOR_MAP.get(rt.getType()), rt.getPart());
         }
         pane.getDocument().addDocumentListener(documentListener);
         return pane.getDocument();
-    }
-
-    private static Color getColor(RegexType type) {
-        switch (type) {
-            case None:
-                return Color.BLACK;
-            case Group:
-                return Color.BLUE;
-            case QuantifierGroup:
-                return Color.BLUE;
-            case Quantifier:
-                return Color.MAGENTA;
-            case Alternation:
-                return Color.MAGENTA;
-            case CharacterGroup:
-                return BROWN;
-            case CharacterClass:
-                return DARK_GREEN;
-            case Anchor:
-                return DARK_GREEN;
-            case ParseError:
-                return Color.RED;
-            case NonPrintable:
-                return Color.GRAY;
-            default:
-                throw new UnsupportedOperationException("Need select color for type=" + type.name());
-        }
     }
 
     private static final DocumentListener documentListener = new DocumentListener() {
