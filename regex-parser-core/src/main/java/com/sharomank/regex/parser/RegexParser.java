@@ -82,6 +82,8 @@ public class RegexParser {
             parseFirstLevel(helper);
         } else if (!helper.isEnd()) {
             parseFirstLevel(helper);
+        } else if (RegexType.Group.equals(helper.getCurrentType())) {
+            helper.putCurrentRegexPart();
         }
     }
 
