@@ -11,9 +11,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import java.awt.*;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 /**
  * Demo client class for demonstration how use {@link RegexParser}
@@ -71,15 +70,33 @@ public class DemoClient {
     private static Document parseRegex(String regex) {
         ColorPane pane = new ColorPane();
         pane.setFont(CUSTOM_FONT);
-        java.util.List<RegexPart> result = RegexParser.parse(regex);
-        System.out.println("regex  count = " + regex.length());
-        System.out.println("result count = " + result.size());
-        for (RegexPart rt : result) {
-            System.out.println(rt);
-            pane.append(REGEX_COLOR_MAP.get(rt.getType()), rt.getPart());
+        List<RegexPart> result = RegexParser.parse(regex);
+        outputPatternUnitTestOnConsole(regex, result);
+        for (RegexPart part : result) {
+            pane.append(REGEX_COLOR_MAP.get(part.getType()), part.getPart());
         }
         pane.getDocument().addDocumentListener(documentListener);
         return pane.getDocument();
+    }
+
+    private static void outputPatternUnitTestOnConsole(final String regex, final List<RegexPart> result) {
+        System.out.println("//Output code for unit test");
+        System.out.println("@Test");
+        System.out.println("public void patternTest() throws Exception {");
+        System.out.println("\tString regex = \"" + convertRegexToString(regex) + "\";");
+        System.out.println("\tList<RegexPart> expected = Arrays.asList(");
+        for (int index = 0; index < result.size(); index++) {
+            RegexPart part = result.get(index);
+            String postfix = index < result.size()-1 ? "," : "";
+            System.out.println("\t\t\tnew RegexPart(\""+ convertRegexToString(part.getPart()) + "\", RegexType." + part.getType().name() + ")" + postfix);
+        }
+        System.out.println("\t);");
+        System.out.println("\tcheckParse(regex, expected);");
+        System.out.println("}");
+    }
+
+    private static String convertRegexToString(String regex) {
+        return regex.replace("\\","\\\\").replace("\"", "\\\"");
     }
 
     private static final DocumentListener documentListener = new DocumentListener() {
