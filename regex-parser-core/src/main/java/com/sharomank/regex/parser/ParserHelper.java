@@ -17,6 +17,7 @@ public class ParserHelper {
     private int previousIndex;
     private int currentIndex;
     private RegexType currentType;
+    private boolean skipToken;
 
     public ParserHelper(String expression) {
         this.expression = expression;
@@ -36,6 +37,7 @@ public class ParserHelper {
     }
 
     public void setCurrentType(RegexType currentType) {
+        this.skipToken = false;
         this.currentType = currentType;
     }
 
@@ -97,5 +99,13 @@ public class ParserHelper {
             return result.get(result.size() - 1).getPart();
         }
         return "";
+    }
+
+    public void skipToken() {
+        this.skipToken = true;
+    }
+
+    public boolean isSkipToken() {
+        return skipToken;
     }
 }

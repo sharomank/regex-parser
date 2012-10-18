@@ -98,7 +98,7 @@ public class RegexParser {
 
         if (helper.isStart() && RegexChar.Caret.getValue().equals(currentChar)) {
             helper.setCurrentType(RegexType.Anchor);
-        } else if (RegexChar.Backslash.getValue().equals(previousChar) && !"\\\\".equals(helper.getPreviousToken())) {
+        } else if (RegexChar.Backslash.getValue().equals(previousChar) && (!"\\\\".equals(helper.getPreviousToken()) || helper.isSkipToken())) {
             if (helper.getCurrentIndex() == 2 && RegexChar.Start.getValue().equals(currentChar)) {
                 helper.setCurrentType(RegexType.Anchor);
             } else if (RegexChar.ANCHOR_AFTER_BACKSLASH.contains(currentChar)) {
@@ -137,7 +137,8 @@ public class RegexParser {
                 helper.setCurrentType(RegexType.QuantifierGroup);
             } else if (RegexChar.QUANTIFIERS.contains(currentChar)) {
                 helper.setCurrentType(RegexType.Quantifier);
-            } else if (!helper.isEnd() && RegexChar.Backslash.getValue().equals(currentChar)) {
+            } else if (RegexChar.Backslash.getValue().equals(currentChar)) {
+                helper.skipToken();
                 parseNextToken(helper);
             } else if (RegexChar.Or.getValue().equals(currentChar)) {
                 helper.setCurrentType(RegexType.Alternation);

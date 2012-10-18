@@ -109,6 +109,28 @@ public class RegexParserTest {
     }
 
     @Test
+    public void simpleBackslashSeries() throws Exception {
+        String regex = "\\\\\\d";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("\\\\", RegexType.None),
+                new RegexPart("\\d", RegexType.CharacterClass)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
+    public void simpleBackslashSeriesWithClasses() throws Exception {
+        String regex = "\\\\\\d\\\\.";
+        List<RegexPart> expected = Arrays.asList(
+                new RegexPart("\\\\", RegexType.None),
+                new RegexPart("\\d", RegexType.CharacterClass),
+                new RegexPart("\\\\", RegexType.None),
+                new RegexPart(".", RegexType.CharacterClass)
+        );
+        checkParse(regex, expected);
+    }
+
+    @Test
     public void simpleAnchorWithoutBackslash() throws Exception {
         String regex = "^t$";
         List<RegexPart> expected = Arrays.asList(
