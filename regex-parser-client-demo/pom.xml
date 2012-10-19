@@ -10,6 +10,25 @@
     </parent>
     <artifactId>regex-parser-client-demo</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix />
+                            <mainClass>com.sharomank.regex.client.DemoClient</mainClass>
+                            <packageName>com.sharomank.regex.client</packageName>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>com.sharomank.regexparser</groupId>
